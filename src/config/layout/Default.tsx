@@ -150,16 +150,6 @@ const LayoutDefault: React.FC<LayoutDefaultPros> = ({
               </ListItemButton>
             </ListItem>
           </Link>
-          <Link to="/characters">
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <InfoIcon />
-                </ListItemIcon>
-                <ListItemText primary="Personagens" />
-              </ListItemButton>
-            </ListItem>
-          </Link>
           <Link to="/about">
             <ListItem disablePadding>
               <ListItemButton>

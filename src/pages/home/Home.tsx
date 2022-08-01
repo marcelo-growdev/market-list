@@ -1,30 +1,67 @@
-import { Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import PaperDefault from '../../components/PaperDefault/PaperDefault';
-import Banner from './components/Banner/Banner';
+import { Button, Grid, Paper, TextField, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import ItemList from '../../components/ItemList/ItemList';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  addOne,
+  selectAll,
+  updateOne,
+} from '../../store/modules/items/ItemsSlice';
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const items = useAppSelector(selectAll);
+  const dispatch = useAppDispatch();
 
-  const text = ` Lorem ipsum dolor sit amet consectetur
-   adipisicing elit. Nam, rem, corporis recusandae fugit 
-   sapiente aut consequuntur corrupti minima velit modi tempora 
-   facere autem quia animi perferendis molestias tenetur voluptatem aliquam.
-   `;
+  const [description, setDescription] = useState<string>('');
+
+  useEffect(() => {
+    console.log('selectall', items);
+  }, [items]);
+
+  const handleAdd = () => {
+    dispatch(
+      addOne({ uid: description + items.length, checked: false, description })
+    );
+    setDescription('');
+  };
+
+  const handleClick = (uid: string) => {
+    dispatch(updateOne({ id: uid, changes: { checked: true } }));
+  };
+
   return (
     <Grid container spacing={2}>
+      <Grid item container xs={12}>
+        <Grid item xs={12}>
+          <Typography variant="h3">Adicionar Item</Typography>
+        </Grid>
+        <Grid item xs={10}>
+          <TextField
+            name="description"
+            label="Descrição"
+            fullWidth
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <Button variant="outlined" onClick={handleAdd}>
+            Adicionar
+          </Button>
+        </Grid>
+      </Grid>
       <Grid item xs={12}>
-        <Banner size="h1" />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <PaperDefault elevation={3} title="Primeiro" body={text} />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <PaperDefault elevation={3} title="Segundo" body={text} />
-      </Grid>
-      <Grid item xs={12} sm={4}>
-        <PaperDefault elevation={3} title="Terceiro" body={text} />
+        {items.map((item) => (
+          <Paper elevation={3} onClick={() => handleClick(item.uid)}>
+            {!item.checked && (
+              <Typography variant="h4">{item.description}</Typography>
+            )}
+            {item.checked && (
+              <Typography variant="h4" className="line-through	">
+                {item.description}
+              </Typography>
+            )}
+          </Paper>
+        ))}
       </Grid>
     </Grid>
   );

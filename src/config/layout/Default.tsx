@@ -112,7 +112,7 @@ const LayoutDefault: React.FC<LayoutDefaultPros> = ({
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Marvel ReactJS
+            Lista de Mercado
           </Typography>
         </Toolbar>
       </AppBar>
